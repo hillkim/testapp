@@ -10,9 +10,5 @@
       "@types/styled-components-react-native"
     ]
   },
-  "moduleResolution": "node",
-  "baseUrl": "./",
-  "paths": {
-    "app/*": ["app/*/index", "app/*"]
-  },
+  
 }

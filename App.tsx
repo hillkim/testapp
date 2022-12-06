@@ -35,7 +35,7 @@ const App = () => {
         <PersistGate loading={null} persistor={persistor}>
           <ThemeProvider theme={theme}>
             <StatusBar
-              barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+              barStyle={'dark-content'}
               backgroundColor={backgroundStyle.backgroundColor}
             />
             <AppNavigation />

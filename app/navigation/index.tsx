@@ -35,6 +35,8 @@ const AppNavigation = (): React.ReactElement => {
 
   useReduxDevToolsExtension(navigationRef);
 
+  console.log('isAppRunning', isAppRunning);
+
   return (
     <NavigationContainer ref={navigationRef}>
       <MainStack.Navigator>
