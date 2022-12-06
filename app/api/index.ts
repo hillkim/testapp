@@ -1,3 +1,5 @@
+import {faker} from '@faker-js/faker';
+
 const mockSuccess = (value: SuccessValue): Promise<SuccessValue> => {
   return new Promise(resolve => {
     setTimeout(() => resolve(value), 2000);
@@ -44,9 +46,23 @@ export const login = (
   email: string,
   password: string,
   shouldFail = false,
+  headers: {
+    api_key: string;
+    secret_key: string;
+  },
 ): Promise<mockRequestValue> => {
   if (shouldFail) {
-    return mockFailure({error: 500, message: 'Request failed successfully!'});
+    return mockFailure({error: 500, message: 'Request failed!'});
+  }
+
+  const mock_api_key = 'c008 2183-35d6-4d39-ac7b-819c546c3b73';
+  const mock_secret_key = 'ecf3ff4a-78d8-4362-9824-3fd272bb3499';
+
+  if (
+    headers.api_key !== mock_api_key &&
+    headers.secret_key !== mock_secret_key
+  ) {
+    return mockFailure({error: 401, message: 'Unauthorized'});
   }
 
   if (!mockCheckLoginData(email, password)) {
@@ -63,9 +79,22 @@ export const createAccount = (
   email: string,
   password: string,
   shouldFail = false,
+  headers: {
+    api_key: string;
+    secret_key: string;
+  },
 ): Promise<mockRequestValue> => {
   if (shouldFail) {
     return mockFailure({error: 500, message: 'Request failed successfully!'});
+  }
+  const mock_api_key = 'c008 2183-35d6-4d39-ac7b-819c546c3b73';
+  const mock_secret_key = 'ecf3ff4a-78d8-4362-9824-3fd272bb3499';
+
+  if (
+    headers.api_key !== mock_api_key &&
+    headers.secret_key !== mock_secret_key
+  ) {
+    return mockFailure({error: 401, message: 'Unauthorized'});
   }
 
   return mockSuccess({authToken: 'mock_token_value'});
@@ -82,60 +111,93 @@ export const getUserData = (
   return mockSuccess(fakeUserData.filter(data => data.email === email)[0]);
 };
 
-// 1. There is a support system to design the dynamic homepage
-// 2. API calls are executed in front of 2 servers :
-// a. Login requests is from OPA-Server-A and the authorization process is using a special header :
-// {"api_key":"c0082183-35d6-4d39-ac7b-819c546c3b73","secret_key":"ecf3ff4a-78d8-4362-9824-3fd272 bb3499"}
-// b. All the rest of the calls are from OPA-Server-B and the authorization is using another header :
-// `Token tokenForExample`
+// Mock api to get home page data an array of 10 items
 
-// Examples for homepage data 1.
-// a. The 3 first components are a carousel of cards.
-// b. data component with user highlight as a card and another 4 carousels .
-// c. Two other data components as carousels for best choices to user .
-// 2.
-// iii. A hero banner with 4 items
-// iv. 5 different carousels .
-// 3.
-// v. A hero banner with 6 items
-// vi. Data component the show picture of the day for the user
-// vii. 1 Carousel
+export const getHomeData = (
+  shouldFail = false,
+  authToken: string,
+): Promise<mockRequestValue> => {
+  // `Token tokenForExample` is a mock token value check token
+  // value in your api to verify if the user is logged in
 
-// 1. Horizontal Carousel of Cards :
-// a. Each card can contain :
-// i. Svg icon
-// ii. Text
-// iii. Image
-// iv. Action to do ( navigation to another part in the app / open the image in
-// different modal )
-// b. No limit on number of objects in the carousel
-// c. Hero Banner :
-// i. Background image
-// ii. Text
-// iii. Button with action ( same as above )
-// iv. No Limit on objects in the banner
-// d. Data component :
-// i. Functions as data components to present User specific data. For example ( user highlights , carousel with items related to user’s location , etc.. )
-// ii. Can be one of the components above / Card / Image
+  const token = authToken.split(' ')[1];
 
-// const Data = {
-//   "type": "data",
-//   "data": [
-//     {
-//       "type": "card",
-//       "data": {
-//         "icon": "https://www.flaticon.com/svg/vstatic/svg/2919/2919609.svg?token=exp=161422951",
-//         "text": "text",
-//         "image": "https://www.flaticon.com/svg/vstatic/svg/2919/2919609.svg?token=exp=161422951",
-//         "action": "action"
+  if (!token || token !== 'tokenForExample') {
+    return mockFailure({error: 401, message: 'Invalid Request'});
+  }
 
-//     },
-//   ],
-// };
+  if (shouldFail) {
+    return mockFailure({error: 401, message: 'Invalid Request'});
+  }
 
-// export const getHomepageData = ( shouldFail = false): Promise<mockRequestValue> => {
-//   if (shouldFail) {
-//     return mockFailure({error: 401, message: 'Invalid Request'});
-//   }
+  let data: HomeData = {
+    hero: {
+      id: faker.datatype.uuid(),
+      title: faker.address.city(),
+      description: faker.company.catchPhrase(),
+      featuredImage: faker.image.abstract(400, 400, true),
+    },
+    items: [],
+  };
 
-//   return mockSuccess(Data);
+  for (let i = 0; i < 10; i++) {
+    data?.items?.push({
+      id: faker.datatype.uuid(),
+      title: faker.address.city(),
+      description: faker.company.catchPhrase(),
+      featuredImage: faker.image.abstract(400, 400, true),
+    });
+  }
+
+  return mockSuccess(data);
+};
+
+// Mock api for a single item page data given item id
+
+export const getItemData = (
+  id: string,
+  shouldFail = false,
+): Promise<mockRequestValue> => {
+  if (shouldFail) {
+    return mockFailure({error: 401, message: 'Invalid Request'});
+  }
+  if (!id) {
+    return mockFailure({error: 404, message: 'Item not found'});
+  }
+
+  let data: ItemData = {
+    id: faker.datatype.uuid(),
+    title: faker.address.city(),
+    description: faker.lorem.paragraphs(3),
+    featuredImage: faker.image.abstract(400, 400, true),
+    images: [],
+  };
+
+  for (let i = 0; i < 8; i++) {
+    data?.images?.push(faker.image.abstract(400, 400, true));
+  }
+
+  return mockSuccess(data);
+};
+
+export const getProfileData = (
+  id: string,
+  shouldFail = false,
+): Promise<mockRequestValue> => {
+  if (shouldFail) {
+    return mockFailure({error: 401, message: 'Invalid Request'});
+  }
+  if (!id) {
+    return mockFailure({error: 404, message: 'Item not found'});
+  }
+
+  let data: ProfileData = {
+    id: faker.datatype.uuid(),
+    name: faker.name.lastName() + ', ' + faker.name.firstName(),
+    email: faker.internet.email(),
+    bio: faker.lorem.paragraphs(3),
+    profileImage: faker.internet.avatar(),
+  };
+
+  return mockSuccess(data);
+};

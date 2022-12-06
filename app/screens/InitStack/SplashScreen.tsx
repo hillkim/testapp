@@ -1,6 +1,7 @@
 import React, {useCallback} from 'react';
-import {Text, TouchableWithoutFeedback} from 'react-native';
+import {TouchableWithoutFeedback} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
+import {faker} from '@faker-js/faker';
 import styled from 'styled-components/native';
 import {AppNavigationProp, MainRoutes} from '../../navigation';
 import {PageContainer} from '../../components';
@@ -28,41 +29,16 @@ const SplashScreen = ({navigation}: SplashScreenProps): React.ReactElement => {
   return (
     <TouchableWithoutFeedback onPress={() => navigate()}>
       <PageContainer>
-        <StyledTitleBox>
-          <Text>ALL BITS EQUAL</Text>
-          <Text>presents</Text>
-          <Text>The Expo Starter Kit</Text>
-        </StyledTitleBox>
-        <StyledContentBox>
-          <Text>stay legendary</Text>
-        </StyledContentBox>
-        <StyledFooter>
-          <Text>written by Konrad Abe</Text>
-        </StyledFooter>
+        <BackgroundImage source={{uri: faker.image.abstract(400, 400, true)}} />
       </PageContainer>
     </TouchableWithoutFeedback>
   );
 };
 
-const StyledTitleBox = styled.View`
+const BackgroundImage = styled.ImageBackground`
   width: 100%;
-  height: 50%;
+  height: 100%;
   align-items: center;
-  justify-content: center;
-`;
-
-const StyledContentBox = styled.View`
-  width: 100%;
-  height: 45%;
-  align-items: center;
-  justify-content: center;
-`;
-
-const StyledFooter = styled.View`
-  width: 100%;
-  height: 10%;
-  padding-right: 3%;
-  align-items: flex-end;
   justify-content: center;
 `;
 

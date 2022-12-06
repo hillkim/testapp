@@ -2,24 +2,18 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 export enum MainRoutes {
-  // Init Stack
   Splash = 'Splash', // display a logo or splash image
-  AppCheck = 'AppCheck', // check vital stuff, forced app updates and such
-
-  // Auth Stack
+  AppCheck = 'AppCheck',
   SignIn = 'SignIn', // existing user entry point
-  SignUp = 'SignUp', // new user entry point
-
-  // App Stack
+  SignUp = 'SignUp',
   AppLoading = 'AppLoading', // Load User Data for signed in users
   Home = 'Home', // The first "real" page of the app, now a set of tabs
-  Settings = 'Settings', // Default Settings Page
+  ItemView = 'Settings', // Default Settings Page
 }
 
 export enum HomeRoutes {
-  HomeA = 'Home Section A', // demo A for nesting
-  HomeB = 'Home Section B', // demo B for nesting
-  HomeC = 'Home Section C', // demo C for nesting
+  HomeA = 'Home',
+  Profile = 'Profile',
 }
 
 export type MainStackParamList = {
@@ -34,13 +28,12 @@ export type MainStackParamList = {
   // App Stack
   [MainRoutes.AppLoading]: undefined;
   [MainRoutes.Home]: undefined;
-  [MainRoutes.Settings]: undefined;
+  [MainRoutes.ItemView]: undefined;
 };
 
 export type HomeTabsParamList = {
   [HomeRoutes.HomeA]: {update: boolean} | undefined; // just an example, "update" will later be used for version checks
-  [HomeRoutes.HomeB]: undefined;
-  [HomeRoutes.HomeC]: undefined;
+  [HomeRoutes.Profile]: undefined;
 };
 
 export const MainStack = createNativeStackNavigator<MainStackParamList>();

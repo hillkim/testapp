@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from 'react';
-import {Text, View} from 'react-native';
+import {View} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import styled from 'styled-components/native';
 import {AppNavigationProp, MainRoutes} from '../../navigation';
@@ -42,7 +42,6 @@ const AppCheckScreen = ({
 
   return (
     <PageContainer>
-      <Text>Loading App Data ...</Text>
       <StyledLoadingBar>
         <View
           style={{

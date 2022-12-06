@@ -9,6 +9,10 @@ import {createAccount, login} from '../api';
 
 import {Middleware} from '@reduxjs/toolkit';
 
+const headers = {
+  api_key: 'c008 2183-35d6-4d39-ac7b-819c546c3b73',
+  secret_key: 'ecf3ff4a-78d8-4362-9824-3fd272bb3499',
+};
 export const userMiddleware: Middleware =
   ({dispatch}) =>
   next =>
@@ -18,7 +22,7 @@ export const userMiddleware: Middleware =
     if (attemptLogin.match(action)) {
       const {email, password} = action.payload;
 
-      login(email, password)
+      login(email, password, false, headers)
         .then(() => dispatch(setLogin(email, false)))
         .catch(err => dispatch(setLogout('denied', err.message)));
     }
@@ -26,7 +30,7 @@ export const userMiddleware: Middleware =
     if (attemptSignUp.match(action)) {
       const {email, password} = action.payload;
 
-      createAccount(email, password)
+      createAccount(email, password, false, headers)
         .then(() => dispatch(setLogin(email, true)))
         .catch(err => dispatch(setLogout('denied', err.message)));
     }

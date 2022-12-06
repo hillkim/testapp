@@ -12,21 +12,22 @@ import {
   CheckScreen,
   LoadingScreen,
   HomeScreen,
-  HomeScreenB,
-  HomeScreenC,
-  SettingsScreen,
+  ProfileScreem,
+  ViewScreen,
   SignInScreen,
   SignUpScreen,
   SplashScreen,
 } from '../screens';
 
-const Home = () => (
-  <HomeTabs.Navigator>
-    <HomeTabs.Screen name={HomeRoutes.HomeA} component={HomeScreen} />
-    <HomeTabs.Screen name={HomeRoutes.HomeB} component={HomeScreenB} />
-    <HomeTabs.Screen name={HomeRoutes.HomeC} component={HomeScreenC} />
-  </HomeTabs.Navigator>
-);
+const Home = () => {
+  console.log('Home');
+  return (
+    <HomeTabs.Navigator screenOptions={{headerShown: false}}>
+      <HomeTabs.Screen name={HomeRoutes.HomeA} component={HomeScreen} />
+      <HomeTabs.Screen name={HomeRoutes.Profile} component={ProfileScreem} />
+    </HomeTabs.Navigator>
+  );
+};
 
 const AppNavigation = (): React.ReactElement => {
   const isAppRunning = useReduxSelector(selectIsRunning);
@@ -39,13 +40,13 @@ const AppNavigation = (): React.ReactElement => {
 
   return (
     <NavigationContainer ref={navigationRef}>
-      <MainStack.Navigator>
+      <MainStack.Navigator screenOptions={{headerShown: false}}>
         {isAppRunning ? (
           <>
             <MainStack.Screen name={MainRoutes.Home} component={Home} />
             <MainStack.Screen
-              name={MainRoutes.Settings}
-              component={SettingsScreen}
+              name={MainRoutes.ItemView}
+              component={ViewScreen}
             />
           </>
         ) : (

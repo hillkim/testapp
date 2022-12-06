@@ -1,6 +1,6 @@
 import React, {useCallback} from 'react';
-import {Text} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
+import {LoaderScreen, Colors} from 'react-native-ui-lib';
 import {useReduxDispatch, setRunning} from '../../redux';
 import {PageContainer} from '../../components';
 
@@ -17,7 +17,7 @@ const AppLoadingScreen = (): React.ReactElement => {
 
   return (
     <PageContainer>
-      <Text>loading User Data...</Text>
+      <LoaderScreen color={Colors.blue30} message="Loading..." overlay />
     </PageContainer>
   );
 };

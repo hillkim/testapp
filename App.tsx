@@ -9,7 +9,7 @@
  */
 
 import React from 'react';
-import {SafeAreaView, StatusBar, useColorScheme} from 'react-native';
+import {StatusBar, useColorScheme} from 'react-native';
 import {Provider} from 'react-redux';
 import {ThemeProvider} from 'styled-components/native';
 import {enableScreens} from 'react-native-screens';
@@ -30,19 +30,17 @@ const App = () => {
   enableScreens(/* enableScreens(true) */ true);
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <ThemeProvider theme={theme}>
-            <StatusBar
-              barStyle={'dark-content'}
-              backgroundColor={backgroundStyle.backgroundColor}
-            />
-            <AppNavigation />
-          </ThemeProvider>
-        </PersistGate>
-      </Provider>
-    </SafeAreaView>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <ThemeProvider theme={theme}>
+          <StatusBar
+            barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+            backgroundColor={backgroundStyle.backgroundColor}
+          />
+          <AppNavigation />
+        </ThemeProvider>
+      </PersistGate>
+    </Provider>
   );
 };
 
