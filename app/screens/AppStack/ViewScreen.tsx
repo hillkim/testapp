@@ -5,6 +5,7 @@ import {PageContainer} from '../../components';
 import {faker} from '@faker-js/faker';
 import {percentageHeight, width} from '../../utils';
 import {ScrollView} from 'react-native-gesture-handler';
+import {RandomIcon} from '../../components/Card';
 
 type ViewScreenProps = {
   navigation: AppNavigationProp<MainRoutes.ItemView>;
@@ -17,6 +18,7 @@ const ViewScreen = ({navigation}: ViewScreenProps): React.ReactElement => (
         source={{uri: faker.image.abstract(1000, 1000, true)}}
         style={{width: width, height: percentageHeight(50)}}
       />
+      <RandomIcon />
       <Text
         style={{
           fontSize: 20,

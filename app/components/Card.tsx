@@ -4,6 +4,7 @@ import {largeScreen, COLORS, RADIUS, android, CARD} from '../utils';
 import LinearGradient from 'react-native-linear-gradient';
 import {Text, View, Button} from 'react-native-ui-lib';
 import {Card} from 'react-native-ui-lib';
+import {Beach, Rain, Rocket} from '../assets';
 
 export interface PromotedCardProps {
   /**
@@ -30,8 +31,35 @@ export interface PromotedCardProps {
    * height of the card
    */
   height: number;
+  /*
+   * description of the card
+   */
+
   description?: string;
+  /**
+   * icon of the card
+   * @default 'beach'
+   * @type 'beach' | 'rain' | 'rocket'
+   * @example 'beach'
+   * @example 'rain'
+   * @example 'rocket'
+   * */
+  icon?: 'beach' | 'rain' | 'rocket';
 }
+
+const Icons = {
+  beach: Beach,
+  rain: Rain,
+  rocket: Rocket,
+};
+
+export const RandomIcon = () => {
+  //  get a random icon by shuffling the keys and getting the first one
+  const keys = Object.keys(Icons);
+  const randomKey = keys[Math.floor(Math.random() * keys.length)];
+  const Icon = Icons[randomKey as keyof typeof Icons];
+  return <Icon style={styles.icon} />;
+};
 
 const PromotedCard: React.FC<PromotedCardProps> = ({
   FeaturedImageURL,
@@ -53,7 +81,7 @@ const PromotedCard: React.FC<PromotedCardProps> = ({
       backgroundColor={COLORS.white}
       onPress={onPress}>
       <Image style={styles.backgroundImage} source={FeaturedImageURL as any} />
-
+      <RandomIcon />
       <LinearGradient
         colors={['rgba(0, 0, 0, 0.15)', 'rgba(0, 0, 0, 0)']}
         style={styles.header}>
@@ -61,6 +89,7 @@ const PromotedCard: React.FC<PromotedCardProps> = ({
           <Text style={styles.name}>{title}</Text>
         </View>
       </LinearGradient>
+
       <LinearGradient
         colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.15)']}
         style={styles.bottom}>
@@ -69,7 +98,7 @@ const PromotedCard: React.FC<PromotedCardProps> = ({
           backgroundColor="#fff"
           label="Read More"
           labelStyle={{fontWeight: '600', color: 'black'}}
-          style={{margin: 4, width: 200, alignSelf: 'center'}}
+          style={{margin: 10, width: 150, alignSelf: 'center'}}
           enableShadow
           onPress={onPress}
         />
@@ -153,5 +182,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: COLORS.white,
     marginLeft: 10,
+  },
+  icon: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    zIndex: 3,
+    width: 50,
+    height: 50,
   },
 });

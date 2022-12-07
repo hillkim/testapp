@@ -3,6 +3,7 @@ import {
   NavigationContainer,
   NavigationContainerRef,
 } from '@react-navigation/native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import {useReduxDevToolsExtension} from '@react-navigation/devtools';
 import {HomeRoutes, HomeTabs, MainRoutes, MainStack} from './routes';
@@ -20,9 +21,19 @@ import {
 } from '../screens';
 
 const Home = () => {
-  console.log('Home');
   return (
-    <HomeTabs.Navigator screenOptions={{headerShown: false}}>
+    <HomeTabs.Navigator
+      screenOptions={({route}) => ({
+        tabBarIcon: ({color, size}) => {
+          let iconName = 'home';
+
+          if (route.name === HomeRoutes.Profile) {
+            iconName = 'person';
+          }
+
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+      })}>
       <HomeTabs.Screen name={HomeRoutes.HomeA} component={HomeScreen} />
       <HomeTabs.Screen name={HomeRoutes.Profile} component={ProfileScreem} />
     </HomeTabs.Navigator>
@@ -35,8 +46,6 @@ const AppNavigation = (): React.ReactElement => {
   const navigationRef: React.RefObject<NavigationContainerRef> = useRef(null);
 
   useReduxDevToolsExtension(navigationRef);
-
-  console.log('isAppRunning', isAppRunning);
 
   return (
     <NavigationContainer ref={navigationRef}>
